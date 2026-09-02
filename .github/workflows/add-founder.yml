@@ -1,0 +1,57 @@
+name: Add KnowTok Founder Button
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  founder-button:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add founder button and mission credit
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          if 'id="founderBtn"' in s:
+              print('Founder button already present.')
+              raise SystemExit(0)
+
+          button = '''<button id="founderBtn" class="founder-btn" type="button">🇮🇳 Founder · Aman Mishra</button>'''
+          style = '''<style id="founderStyle">.founder-btn{width:100%;margin-top:10px;border:1px solid #2a3445;background:linear-gradient(135deg,#111827,#172033);color:#fff;border-radius:14px;padding:12px 13px;font-weight:800;text-align:left;box-shadow:0 8px 24px #0005}.founder-btn:hover{border-color:#7c5cff;transform:translateY(-1px)}.founder-credit{max-width:720px;margin:0 auto;padding:18px;color:var(--muted);text-align:center;font-size:12px}.founder-credit strong{color:var(--text)}.founder-credit a{color:var(--accent);font-weight:800;text-decoration:none}</style>'''
+          credit = '''<div class="founder-credit"><strong>🇮🇳 KnowTok was made alone by Aman Mishra from India</strong><br>Built to fight brain-rot content and make curiosity, knowledge and meaningful discovery easier to access.<br><a href="https://www.lifeofaman.onrender.com" target="_blank" rel="noopener noreferrer">Visit the Founder →</a></div>'''
+          script = '''<script id="founderScript">document.getElementById('founderBtn').addEventListener('click',()=>window.open('https://www.lifeofaman.onrender.com','_blank','noopener,noreferrer'));</script>'''
+
+          # Put the founder button immediately after the Create button.
+          marker = '<button class="create" id="createBtn">＋ Create</button>'
+          if marker not in s:
+              raise SystemExit('Create button marker not found')
+          s = s.replace(marker, marker + button, 1)
+
+          # Add styling before </head>, credit before </body>, and behavior before </body>.
+          s = s.replace('</head>', style + '</head>', 1)
+          s = s.replace('</body>', credit + script + '</body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add KnowTok founder button and Aman Mishra credit"
+          git push
