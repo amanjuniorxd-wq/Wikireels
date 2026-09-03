@@ -1,10 +1,10 @@
 /* KnowAI Engine — scalable virtual knowledge/thread universe.
-   It does NOT materialize 10 trillion records in the browser. IDs are generated
-   deterministically on demand; real media/database storage belongs in a backend.
+   1 trillion thread universe. Records are generated deterministically on demand;
+   the browser does not materialize one trillion records in memory or storage.
 */
 (function(){
 'use strict';
-const TOTAL_THREADS=10000000000000n;
+const TOTAL_THREADS=1000000000000n;
 const START_YEAR=2000, END_YEAR=2026;
 const NEWS=[
 [2000,'Dot-com crash','Technology/Economics','The collapse of speculative internet valuations reshaped technology finance and pushed surviving companies toward sustainable business models.'],
@@ -38,12 +38,12 @@ const NEWS=[
 const CATS=['Science','History','Philosophy','Technology','Economics','Politics','Mathematics','Biology','Physics','Space','Culture','Geography','Language','Art','Education','Psychology','Law','Engineering','Medicine','Environment'];
 const HOOKS=['What changed because of','The hidden cause behind','What history teaches us about','The evidence for','The strongest argument against','A surprising connection between','What most people miss about','The long-term consequence of','How this changed','What would happen if'];
 function hash64(x){let h=1469598103934665603n;for(const c of String(x)){h^=BigInt(c.codePointAt(0));h=BigInt.asUintN(64,h*1099511628211n)}return h;}
-function virtualThread(id){let n=BigInt(id);let h=hash64(n);let cat=CATS[Number(h%BigInt(CATS.length))];let year=START_YEAR+Number((h/31n)%BigInt(END_YEAR-START_YEAR+1));let hook=HOOKS[Number((h/97n)%BigInt(HOOKS.length))];return {id:n.toString(),title:`${hook} ${cat.toLowerCase()} (${year})`,category:cat,year,agent:`KnowAI-${(h%10000n).toString().padStart(4,'0')}`,kind:Number(h%2n)?'discussion':'explanation'};}
+function virtualThread(id){let n=BigInt(id);if(n<0n||n>=TOTAL_THREADS)throw new RangeError('Thread ID outside KnowAI 1T universe');let h=hash64(n);let cat=CATS[Number(h%BigInt(CATS.length))];let year=START_YEAR+Number((h/31n)%BigInt(END_YEAR-START_YEAR+1));let hook=HOOKS[Number((h/97n)%BigInt(HOOKS.length))];return {id:n.toString(),title:`${hook} ${cat.toLowerCase()} (${year})`,category:cat,year,agent:`KnowAI-${(h%10000n).toString().padStart(4,'0')}`,kind:Number(h%2n)?'discussion':'explanation'};}
 function historicalThreads(limit=50){let out=[];for(let i=0;i<limit;i++){let e=NEWS[i%NEWS.length];out.push({id:`news-${e[0]}-${i}`,year:e[0],title:e[1],category:e[2],summary:e[3],type:'historical-news',sourceAware:true});}return out;}
 function renderPanel(){
  const nav=document.querySelector('.nav'); if(!nav||document.getElementById('knowaiNewsBtn'))return;
  const b=document.createElement('button');b.id='knowaiNewsBtn';b.textContent='📰  KnowAI News';nav.appendChild(b);
- const box=document.createElement('div');box.className='box';box.id='knowaiStats';box.innerHTML=`<h3>KnowAI Universe</h3><div class="topic"><b>10,000,000,000,000 virtual threads</b><span>Generated deterministically on demand · not pre-stored</span></div><div class="topic"><b>26-year news intelligence</b><span>2000–2026 historical timeline · source-aware summaries</span></div>`;document.querySelector('.rightbar')?.prepend(box);
+ const box=document.createElement('div');box.className='box';box.id='knowaiStats';box.innerHTML=`<h3>KnowAI Universe</h3><div class="topic"><b>1,000,000,000,000 virtual threads</b><span>Generated deterministically on demand · not pre-stored</span></div><div class="topic"><b>26-year news intelligence</b><span>2000–2026 historical timeline · source-aware summaries</span></div>`;document.querySelector('.rightbar')?.prepend(box);
  b.onclick=()=>showNews();
 }
 function showNews(){const c=document.getElementById('content');if(!c)return;document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));document.getElementById('knowaiNewsBtn')?.classList.add('active');c.className='feed';c.innerHTML=`<div class="post"><h2>KnowAI News — 26-year context engine</h2><p>Historical news is presented as concise, original summaries rather than copied articles. The archive layer spans 2000–2026 and is designed to connect events with consequences.</p><div class="meta">26-year window · ${NEWS.length} curated anchor events · expandable source graph</div></div>`+NEWS.slice().reverse().map((e,i)=>`<article class="post"><div class="who"><div class="avatar">${String(e[0]).slice(-2)}</div><div><div class="name">KnowAI Historical Desk</div><div class="handle">${e[0]} · ${e[2]}</div></div></div><h2>${e[1]}</h2><p>${e[3]}</p><div class="meta">Historical context · ${e[0]} · AI synthesis</div></article>`).join('');}
