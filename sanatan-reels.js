@@ -1,0 +1,34 @@
+/* Sanatana Reels — educational category about Sanatana Dharma.
+   Uses clearly labelled educational presentations inspired by historical teachers;
+   it does not claim that any living person is actually speaking.
+*/
+(function(){
+'use strict';
+const SANATANA=[
+  ['The Upanishadic question','What am I beyond my roles, possessions and changing thoughts?','Upanishads','Self-inquiry'],
+  ['Dharma in everyday life','Dharma can be explored as the principles and responsibilities that help a person live with integrity, self-discipline and regard for others.','Bhagavad Gita','Dharma'],
+  ['Karma and action','The Gita distinguishes action from attachment to the fruits of action: act carefully, sincerely and responsibly, while loosening the grip of expectation.','Bhagavad Gita','Karma Yoga'],
+  ['Yoga is more than exercise','In classical traditions, yoga includes ethical disciplines, concentration, meditation and paths toward freedom—not only physical postures.','Patanjali Yoga Sutras','Yoga'],
+  ['Bhakti: the path of devotion','Devotion can be understood as cultivating love, surrender, remembrance and a relationship with the divine.','Bhakti traditions','Bhakti'],
+  ['Advaita and non-duality','Advaita Vedanta explores the possibility that the deepest Self is not separate from ultimate reality. It is a philosophical teaching, not a shortcut around careful inquiry.','Adi Shankaracharya tradition','Vedanta'],
+  ['The many forms of the divine','Sanatana traditions contain diverse approaches to the divine, including Shiva, Vishnu, Devi, Ganesha, Surya and many regional traditions.','Hindu traditions','Plurality'],
+  ['Ahimsa and compassion','Non-harm is a major ethical ideal across Indian philosophical traditions, encouraging restraint, compassion and respect for living beings.','Dharma traditions','Ethics'],
+  ['Meditation and the mind','Meditative traditions train attention and awareness through different methods, from breath observation to mantra and contemplative inquiry.','Yoga and Vedanta','Meditation'],
+  ['Festivals as living philosophy','Diwali, Navaratri, Holi, Janmashtami, Mahashivratri and other festivals connect stories, ritual, community and philosophical ideas.','Living traditions','Festivals'],
+  ['Why Sanskrit matters','Sanskrit preserves a vast body of philosophical, poetic, ritual and scientific literature, while Sanatana traditions also flourish in many Indian languages.','Indian intellectual traditions','Language'],
+  ['Gurus and teachers','A guru traditionally serves as a teacher or guide. A healthy learning culture also values questioning, context, evidence and discernment.','Guru-shishya traditions','Learning']
+];
+const TEACHERS=[
+ ['Adi Shankaracharya','Advaita Vedanta','Educational presentation inspired by his philosophical tradition: investigate the distinction between the changing and the enduring rather than accepting every assumption about the self.'],
+ ['Swami Vivekananda','Vedanta and practical spirituality','Educational presentation inspired by his writings and lectures: spiritual life can be connected with strength, service, character and the recognition of human dignity.'],
+ ['Ramana Maharshi','Self-inquiry','Educational presentation inspired by his teachings: the question “Who am I?” can be used as a contemplative investigation into the sense of self.'],
+ ['Patanjali','Yoga philosophy','Educational presentation based on the Yoga Sutra tradition: disciplined practice, ethical conduct, concentration and meditation form a broader path than physical exercise alone.'],
+ ['Bhagavad Gita teachers','Karma, Jnana and Bhakti','Educational presentation: the Gita offers multiple approaches to spiritual life and repeatedly returns to disciplined action, knowledge, devotion and steadiness.']
+];
+function escapeHTML(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+function card(i){const x=SANATANA[i%SANATANA.length];return `<article class="post"><div class="who"><div class="avatar">ॐ</div><div><div class="name">Sanatana Learning</div><div class="handle">@sanatana · educational reel</div></div><button class="follow">Follow</button></div><div class="media"><div style="width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#9b6a28,#24170c 55%,#090706);font-size:72px">ॐ</div><span class="label">Sanatana · ${escapeHTML(x[3])}</span></div><h2>${escapeHTML(x[0])}</h2><p>${escapeHTML(x[1])}</p><div class="meta">${escapeHTML(x[2])} · Educational summary · Explore primary texts and qualified teachers</div><div class="actions"><button>♡ Like</button><button>◯ Comment</button><button>▱ Save</button><button>↗ Share</button></div></article>`;}
+function showSanatana(){const c=document.getElementById('content');if(!c)return;window.scrollTo?.(0,0);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));document.getElementById('sanatanaBtn')?.classList.add('active');c.className='feed';c.innerHTML=`<div class="post"><h2>🕉 Sanatana</h2><p>Explore Sanatana Dharma through philosophy, yoga, dharma, karma, bhakti, Vedanta, stories, festivals, texts and living traditions.</p><div class="meta">English educational presentations · Multiple schools and viewpoints · Not a substitute for a living teacher or primary source</div></div>`+SANATANA.map((_,i)=>card(i)).join('')+`<div class="post"><h2>Sanatana & You</h2><p>Use these reels as starting points for reflection: What values do you want to practice? What does dharma mean in your circumstances? Which tradition or text would you like to study more deeply?</p><div class="meta">Personal reflection · Your questions stay yours; the category provides educational context.</div></div>`+TEACHERS.map(t=>`<article class="post"><div class="who"><div class="avatar">ॐ</div><div><div class="name">${escapeHTML(t[0])}</div><div class="handle">${escapeHTML(t[1])} · educational presentation</div></div></div><h2>Teachings to explore</h2><p>${escapeHTML(t[2])}</p><div class="meta">Clearly labelled as an educational presentation, not a new statement from the historical teacher.</div></article>`).join('');}
+function install(){const nav=document.querySelector('.nav');if(!nav||document.getElementById('sanatanaBtn'))return;const b=document.createElement('button');b.id='sanatanaBtn';b.textContent='🕉  Sanatana';nav.appendChild(b);b.onclick=showSanatana;const box=document.createElement('div');box.className='box';box.innerHTML='<h3>Sanatana</h3><div class="topic"><b>Philosophy · Yoga · Dharma · Bhakti</b><span>English educational reels across diverse traditions</span></div>';document.querySelector('.rightbar')?.prepend(box);}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+window.SanatanaReels={showSanatana,SANATANA,TEACHERS};
+})();
