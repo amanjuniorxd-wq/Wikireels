@@ -50,4 +50,5 @@ function showNews(){const c=document.getElementById('content');if(!c)return;docu
 window.KnowAI={TOTAL_THREADS,NEWS,virtualThread,historicalThreads,renderPanel,showNews};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderPanel);else renderPanel();
 const s=document.createElement('script');s.src='philosophy-reels.js';s.defer=true;document.head.appendChild(s);
+const san=document.createElement('script');san.src='sanatan-reels.js';san.defer=true;document.head.appendChild(san);
 })();
