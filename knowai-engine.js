@@ -51,4 +51,5 @@ window.KnowAI={TOTAL_THREADS,NEWS,virtualThread,historicalThreads,renderPanel,sh
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderPanel);else renderPanel();
 const s=document.createElement('script');s.src='philosophy-reels.js';s.defer=true;document.head.appendChild(s);
 const san=document.createElement('script');san.src='sanatan-reels.js';san.defer=true;document.head.appendChild(san);
+const laozi=document.createElement('script');laozi.src='laozi-account.js';laozi.defer=true;document.head.appendChild(laozi);
 })();
